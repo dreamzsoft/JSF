@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+</h:head>
+<h:body>
+	<h:form id="niitForm">
+
+
+		<p:tabView dynamic="true" effect="fade"
+			style="position:absolute; top:100px; left:240px;" id="tab">
+			<p:tab title="Currency Selection" titleStyleClass="border:grove;"
+				titleStyle="border-top-right-radius:90">
+				<h:panelGrid columns="2" cellpadding="10" id="tabPanel">
+					<p:outputLabel value="From Currency"></p:outputLabel>
+					<p:spacer width="5"></p:spacer>
+					<p:selectOneMenu value="#{userBean.fromCurrency}">
+						<f:selectItems value="#{userBean.currencyList}"></f:selectItems>
+						<p:ajax event="change"
+							listener="#{userBean.updateSelection('to')}" process="@this"></p:ajax>
+					</p:selectOneMenu>
+					<p:spacer width="20"></p:spacer>
+					<p:outputLabel value="To Currency"></p:outputLabel>
+					<p:spacer width="5"></p:spacer>
+					<p:selectOneMenu value="#{userBean.toCurrency}">
+						<f:selectItems value="#{userBean.currencyList}"></f:selectItems>
+						<p:ajax event="change"
+							listener="#{userBean.updateSelection('to')}" process="@this"></p:ajax>
+					</p:selectOneMenu>
+					<p:spacer width="20"></p:spacer>
+					<p:outputLabel
+						value="You have Selected Convertion From #{userBean.fromCurrency} To #{userBean.toCurrency}"
+						id="selectedToCurrency"></p:outputLabel>
+
+
+				</h:panelGrid>
+
+
+			</p:tab>
+			<p:tab title="Live Result" titleStyle="border-top-right-radius:90">
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:outputText
+						value="Current Exchange Rate From #{userBean.fromCurrency} To #{userBean.toCurrency} is 0.0" />
+				</h:panelGrid>
+			</p:tab>
+		</p:tabView>
+		<p:commandButton id="logout" value="Logout"
+			action="#{userBean.gotoLogin()}"
+			style="position:absolute; top:60px; left:613px;background:white;border-top-right-radius:100;"></p:commandButton>
+		<p:tooltip for="logout" value="Go Back To Login Page"></p:tooltip>
+
+		<p:dialog showHeader="false" closable="false" widgetVar="dlg" id="dia"
+			modal="true" resizable="false" showEffect="fade" hideEffect="fade">
+			<BR />
+			<BR />
+			<BR />
+			<p:spacer width="10" />
+			<h:outputText value="Your Login Time : #{userBean.date}" />
+			<p:spacer width="10" />
+			<BR />
+			<BR />
+			<BR />
+			<f:facet name="footer">
+				<p:commandButton id="closeDialoge" value="Close"
+					onclick="PF('dlg').hide();" style="background:white" />
+			</f:facet>
+
+		</p:dialog>
+		<p:commandButton id="loginTime" value="Login Time"
+			action="#{userBean.showDialoge()}"
+			style="position:absolute; top:60px; left:240px;background:white;border-top-right-radius:100;" />
+		<p:tooltip for="loginTime" value="Wants to know your login time?"></p:tooltip>
+	</h:form>
+</h:body>
+</html>
