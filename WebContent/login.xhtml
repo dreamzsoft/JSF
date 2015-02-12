@@ -3,7 +3,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core" style="background:lightgray;">
 <h:head>
 
 
@@ -168,6 +168,7 @@ background-image: url('https://cdn2.iconfinder.com/data/icons/windows-8-metro-st
 <h:body>
 	<h:outputText value="#{userBean.errMsg}" style="color:red;font-size:13" />
 	<h:form id="loginForm">
+	<p:focus   for="loginForm:User"/>
 	<p:growl id="growl" showDetail="true" sticky="true" showSummary="true" />  
 		<div class="body"></div>
 		<div class="grad"></div>
@@ -177,19 +178,17 @@ background-image: url('https://cdn2.iconfinder.com/data/icons/windows-8-metro-st
 			</div>
 		</div>
 		<div class="login">
-			
-			<p:inputText id="User" value="#{userBean.userName}"
+						
+			<p:inputText id="User" value="#{userBean.userName}" placeholder="User"
 				required="true"><p:ajax event="change" update="loginForm:loginBtn"></p:ajax>
 			</p:inputText>
-<!-- 			<p:message for="User" showDetail="true"></p:message> -->
 			
 			<BR />
-			<h:inputSecret title="psw" id="Password" value="#{userBean.password}"
-				required="true" /><BR />
-<!-- 			<p:message for="Password" style="color:red;font-size:13" /><BR /> -->
-<BR />
+			<p:password id="Password" value="#{userBean.password}" required="true" placeholder="Password"></p:password>
+			<BR />
+			<BR />
 			<p:commandButton value="Login Now" update="loginForm" icon="#{userBean.userName == 'ankur' ? 'ui-icon-check' : 'ui-icon-cross'}" id="loginBtn"
-				action="#{userBean.verifyUser}" style="width:260px;"></p:commandButton>
+				action="#{userBean.verifyUser}" style="width:260px;border-radius:100px;"></p:commandButton>
 		</div>
 
 		<script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>

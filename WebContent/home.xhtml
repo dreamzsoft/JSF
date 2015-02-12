@@ -8,29 +8,32 @@
 <h:body>
 	<h:form id="niitForm">
 
-
-		<p:tabView dynamic="true" effect="fade"
-			style="position:absolute; top:100px; left:240px;" id="tab">
-			<p:tab title="Currency Selection" titleStyleClass="border:grove;"
-				titleStyle="border-top-right-radius:90">
+		<p:tabView dynamic="true" effect="fade" activeIndex="#{userBean.activeIndex}" rendered="#{userBean.currencyClient}"
+			style="position:absolute; top:100px; left:250px;width:465px;height:236px;"
+			id="tab">
+			<p:tab title="Currency Selection" 
+				titleStyle="border-top-right-radius:100px;"
+				titletip="Can Be Used To Select Currency">
 				<h:panelGrid columns="2" cellpadding="10" id="tabPanel">
 					<p:outputLabel value="From Currency"></p:outputLabel>
 					<p:spacer width="5"></p:spacer>
-					<p:selectOneMenu value="#{userBean.fromCurrency}">
+					<p:selectOneMenu value="#{userBean.fromCurrency}" style="position:absolute; top:118px;width:128px;">
 						<f:selectItems value="#{userBean.currencyList}"></f:selectItems>
 						<p:ajax event="change"
 							listener="#{userBean.updateSelection('to')}" process="@this"></p:ajax>
 					</p:selectOneMenu>
 					<p:spacer width="20"></p:spacer>
-					<p:outputLabel value="To Currency"></p:outputLabel>
+					<p:outputLabel value="To Currency"
+						style="position:absolute; top:78px; left:200px;"></p:outputLabel>
 					<p:spacer width="5"></p:spacer>
-					<p:selectOneMenu value="#{userBean.toCurrency}">
+					<p:selectOneMenu value="#{userBean.toCurrency}"
+						style="position:absolute; top:118px; left:200px;width:128px;">
 						<f:selectItems value="#{userBean.currencyList}"></f:selectItems>
 						<p:ajax event="change"
 							listener="#{userBean.updateSelection('to')}" process="@this"></p:ajax>
 					</p:selectOneMenu>
 					<p:spacer width="20"></p:spacer>
-					<p:outputLabel
+					<p:outputLabel style="position:absolute; top:185px; left:40px;"
 						value="You have Selected Convertion From #{userBean.fromCurrency} To #{userBean.toCurrency}"
 						id="selectedToCurrency"></p:outputLabel>
 
@@ -39,20 +42,33 @@
 
 
 			</p:tab>
-			<p:tab title="Live Result" titleStyle="border-top-right-radius:90">
+			<p:tab title="Live Result" titleStyle="border-top-right-radius:90px"
+				titletip="Display Live Currency Rate">
 				<h:panelGrid columns="2" cellpadding="10">
 					<h:outputText
-						value="Current Exchange Rate From #{userBean.fromCurrency} To #{userBean.toCurrency} is 0.0" />
+						value="Current Exchange Rate From #{userBean.fromCurrency} To #{userBean.toCurrency} is 1.00" />
 				</h:panelGrid>
+
+			</p:tab>
+			<p:tab title="Terminal" titleStyle="border-top-right-radius:90px" 
+				titletip="Execute Commands">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:terminal id="terminal" widgetVar="term" prompt="#{userBean.userName}$ " style="height:125px;width:380px;"
+						commandHandler="#{userBean.handleCommand}"
+						welcomeMessage="NIIT Terminal>" />
+				</h:panelGrid>
+
 			</p:tab>
 		</p:tabView>
 		<p:commandButton id="logout" value="Logout"
 			action="#{userBean.gotoLogin()}"
-			style="position:absolute; top:60px; left:613px;background:white;border-top-right-radius:100;"></p:commandButton>
+			style="position:absolute; top:60px; left:250px;background:white;border-top-right-radius:100;"></p:commandButton>
 		<p:tooltip for="logout" value="Go Back To Login Page"></p:tooltip>
-
+		<p:outputLabel value="Welcome #{userBean.userName}!!"
+			style="position:absolute; top:65px; left:483px;"></p:outputLabel>
 		<p:dialog showHeader="false" closable="false" widgetVar="dlg" id="dia"
-			modal="true" resizable="false" showEffect="fade" hideEffect="fade">
+			modal="true" resizable="false" showEffect="clip" hideEffect="clip">
 			<BR />
 			<BR />
 			<BR />
@@ -70,8 +86,107 @@
 		</p:dialog>
 		<p:commandButton id="loginTime" value="Login Time"
 			action="#{userBean.showDialoge()}"
-			style="position:absolute; top:60px; left:240px;background:white;border-top-right-radius:100;" />
+			style="position:absolute; top:60px; left:350px;background:white;border-top-right-radius:100;" />
 		<p:tooltip for="loginTime" value="Wants to know your login time?"></p:tooltip>
+
+		<p:tieredMenu style="border-radius:19px;">
+
+			<p:submenu label="Favorites" icon="fa-bus">
+				<p:menuitem value="Not Defined" disabled="true">
+				</p:menuitem>
+			</p:submenu>
+			<p:submenu label="My Data">
+				<p:menuitem value="Applications (Leave/Travel/Vouchers)"
+					style="line-height:21px;"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="Care"></p:menuitem>
+				<p:separator />
+				<p:menuitem
+					value="Code of Conduct and Policy Against Sexual Harassment at Workplace"
+					style="line-height:21px;"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="Floating Holidays"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="IPMS Timesheet"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="Mediclaim Guidelines"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="Mediclaim Guidelines"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="My Info"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="Add New Client" action="#{userBean.callAddClient()}" update="niitForm"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="Currency Convertor" action="#{userBean.callCurrencyConvertor(0)}" update="niitForm"></p:menuitem>
+				<p:separator />
+				<p:menuitem value="Terminal" action="#{userBean.callCurrencyConvertor(2)}" update="niitForm"></p:menuitem>
+				<p:separator />
+			</p:submenu>
+			<p:menuitem value="My Development"></p:menuitem>
+			<p:menuitem value="Human Resources"></p:menuitem>
+			<p:menuitem value="Business"></p:menuitem>
+			<p:menuitem value="Finance"></p:menuitem>
+			<p:menuitem value="Commercial"></p:menuitem>
+			<p:menuitem value="CMO"></p:menuitem>
+			<p:menuitem value="IRO"></p:menuitem>
+			<p:menuitem value="Info Security"></p:menuitem>
+			<p:submenu label="::iniitian Login::">
+				<p:menuitem value="">
+					<p:lightBox iframe="true" id="lighbox3">
+						<h:outputLink value="https://iniitian.niit-tech.com/"
+							title="::iniitian Login::">
+							<h:outputText value="  > iniitian Home" />
+						</h:outputLink>
+					</p:lightBox>
+				</p:menuitem>
+				<p:separator />
+			</p:submenu>
+		</p:tieredMenu>
+		<p:contextMenu>
+			<p:menuitem value="Log-Time" action="#{userBean.showDialoge()}"
+				icon="ui-icon-disk" />
+			<p:menuitem value="Log-Out" action="#{userBean.gotoLogin()}"
+				icon="ui-icon-extlink">
+
+			</p:menuitem>
+
+		</p:contextMenu>
+		<p:panel id="dataPanel" rendered="#{userBean.addClient}" style="position:absolute; top:100px; left:250px;">
+			<p:outputLabel value="Name"></p:outputLabel>
+			<p:spacer width="2"/>
+			<p:inputText value="#{userBean.clientInfoObj.name}">
+			<p:ajax/>
+			</p:inputText>
+			<p:spacer width="7"/>
+			<p:outputLabel value="City"></p:outputLabel>
+			<p:spacer width="2"/>
+			<p:inputText value="#{userBean.clientInfoObj.city}">
+			<p:ajax/>
+			</p:inputText>
+			<p:spacer width="7"/>
+			<p:outputLabel value="Phone"></p:outputLabel>
+			<p:spacer width="2"/>
+			<p:inputText value="#{userBean.clientInfoObj.phone}">
+			<p:ajax/>
+			</p:inputText>
+			<p:spacer width="7"/>
+			<p:commandButton value="Add Client" action="#{userBean.addClient()}" process="@this" update="niitForm"></p:commandButton>
+			
+			<p:commandButton value="#{userBean.showClient eq 'show' ? 'Hide Client' : 'Show Client'}" action="#{userBean.showClient()}" update="niitForm" process="@this"></p:commandButton>
+			
+			<p:dataTable value="#{userBean.clientList}" var="client" id="table" rendered="#{userBean.showClient eq 'show'}">
+			<p:column headerText="Name">
+				<p:outputLabel value="#{client.name}"></p:outputLabel>
+			</p:column>
+			<p:column headerText="City">
+				<p:outputLabel value="#{client.city}"></p:outputLabel>
+			</p:column>
+			<p:column headerText="Phone">
+				<p:outputLabel value="#{client.phone}"></p:outputLabel>
+			</p:column>
+			</p:dataTable>
+		</p:panel>
+
 	</h:form>
 </h:body>
 </html>
